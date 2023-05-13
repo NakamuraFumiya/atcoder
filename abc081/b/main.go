@@ -19,21 +19,28 @@ func main() {
 		fmt.Fscan(r, &s[i])
 	}
 
-	count := 0
-	flg := true
-	for flg {
+	res := 0
+	for true {
+		existOdd := false
+		// 奇数が存在するか確認
 		for i := range s {
-			if s[i]%2 == 0 {
-				s[i] = s[i] / 2
-			} else {
-				flg = false
+			if s[i]%2 != 0 {
+				existOdd = true
 				break
 			}
 		}
-		if flg {
-			count++
+
+		// 奇数が存在するならループ処理を抜ける
+		if existOdd {
+			break
 		}
+
+		// 全て偶数なら操作処理を行う
+		for i := range s {
+			s[i] /= 2
+		}
+		res++
 	}
 
-	fmt.Println(count)
+	fmt.Println(res)
 }
