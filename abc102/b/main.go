@@ -3,8 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
 	"os"
+	"sort"
 )
 
 func main() {
@@ -20,14 +20,6 @@ func main() {
 		fmt.Fscan(r, &s[i])
 	}
 
-	var res int
-	for i := 0; i+1 < N; i++ {
-		for j := i + 1; j < N; j++ {
-			abs := int(math.Abs(float64(s[j] - s[i])))
-			if abs > res {
-				res = abs
-			}
-		}
-	}
-	fmt.Println(res)
+	sort.Slice(s, func(i, j int) bool { return s[i] < s[j] })
+	fmt.Println(s[len(s)-1] - s[0])
 }
