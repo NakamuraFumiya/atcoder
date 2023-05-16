@@ -1,57 +1,88 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 )
 
 func main() {
+	r := bufio.NewReader(os.Stdin)
+	w := bufio.NewWriter(os.Stdout)
+	defer w.Flush()
+
 	var s, t string
-	fmt.Scan(&s)
-	fmt.Scan(&t)
+	fmt.Fscan(r, &s)
+	fmt.Fscan(r, &t)
 
-	ms, mt := map[string]int{}, map[string]int{}
-	atS, atT := 0, 0
+	sMap, tMap := map[string]int{}, map[string]int{}
+	atcoderStr := "atcoder"
+	// atcoderStr := []string{"a", "t", "c", "o", "d", "e", "r"}
 
-	for i := 0; i < len(s); i++ {
-		if string(s[i]) == "@" {
-			atS++
-		} else {
-			ms[string(s[i])]++
-		}
-
-		if string(t[i]) == "@" {
-			atT++
-		} else {
-			mt[string(t[i])]++
-		}
+	for i := range s {
+		sMap[string(s[i])]++
+	}
+	for i := range t {
+		tMap[string(t[i])]++
 	}
 
-	atcoder := []string{"a", "t", "c", "o", "d", "e", "r"}
 	ans := true
+	for i := range sMap {
+		if i == "@" {
+			continue
+		}
+		if sMap[i] < tMap[i] {
+			tmp := tMap[i] - sMap[i]
+			if sMap["@"] >= tmp && strings.Contains(atcoderStr, i) {
+				sMap["@"] -= tmp
+				sMap[i] += tmp
+			} else {
+				ans = false
+			}
+		}
 
-	for _, v := range atcoder {
-		if ms[v] > mt[v] {
-			tmp := ms[v] - mt[v]
-			if tmp > atT {
-				break
+		if sMap[i] > tMap[i] && strings.Contains(atcoderStr, i) {
+			tmp := sMap[i] - tMap[i]
+			if tMap["@"] >= tmp {
+				tMap["@"] -= tmp
+				tMap[i] += tmp
+			} else {
+				ans = false
 			}
-			mt[v] += tmp
-			atT -= tmp
-		} else if ms[v] < mt[v] {
-			tmp := mt[v] - ms[v]
-			if tmp > atS {
-				break
-			}
-			ms[v] += tmp
-			atS -= tmp
 		}
 	}
 
-	for j := range ms {
-		ans = ans && ms[j] == mt[j]
+	for i := range tMap {
+		if i == "@" {
+			continue
+		}
+		if sMap[i] < tMap[i] && strings.Contains(atcoderStr, i) {
+			tmp := tMap[i] - sMap[i]
+			if sMap["@"] >= tmp {
+				sMap["@"] -= tmp
+				sMap[i] += tmp
+			} else {
+				ans = false
+			}
+		}
+
+		if sMap[i] > tMap[i] && strings.Contains(atcoderStr, i) {
+			tmp := sMap[i] - tMap[i]
+			if tMap["@"] >= tmp {
+				tMap["@"] -= tmp
+				tMap[i] += tmp
+			} else {
+				ans = false
+			}
+		}
 	}
-	for j := range mt {
-		ans = ans && ms[j] == mt[j]
+
+	for i := range sMap {
+		ans = ans && sMap[i] == tMap[i]
+	}
+	for i := range tMap {
+		ans = ans && tMap[i] == sMap[i]
 	}
 
 	if ans {
@@ -59,5 +90,4 @@ func main() {
 	} else {
 		fmt.Println("No")
 	}
-
 }
