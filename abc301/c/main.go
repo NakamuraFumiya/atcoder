@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"reflect"
 	"strings"
 )
 
@@ -78,12 +79,7 @@ func main() {
 		}
 	}
 
-	for i := range sMap {
-		ans = ans && sMap[i] == tMap[i]
-	}
-	for i := range tMap {
-		ans = ans && tMap[i] == sMap[i]
-	}
+	ans = reflect.DeepEqual(sMap, tMap)
 
 	if ans {
 		fmt.Println("Yes")
