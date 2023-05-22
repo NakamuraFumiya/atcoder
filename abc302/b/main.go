@@ -26,9 +26,9 @@ func main() {
 	dj := []int{-1, 0, 1, -1, 1, -1, 0, 1}
 	for si := 0; si < H; si++ {
 		for sj := 0; sj < W; sj++ {
-			i, j := si, sj
 			// 8方向で探索
 			for k := 0; k < 8; k++ {
+				i, j := si, sj
 				for l := 0; l < 5; l++ {
 					if i < 0 || j < 0 || i >= H || j >= W {
 						break
@@ -36,15 +36,14 @@ func main() {
 					if string(strSlice[i][j]) != string(T[l]) {
 						break
 					}
-					if k == 4 {
+					if l == 4 {
+						i, j = si, sj
 						for m := 0; m < 5; m++ {
-							i, j = si, sj
 							fmt.Printf("%d %d\n", i+1, j+1)
 							i += di[k]
 							j += dj[k]
 						}
 					}
-					// TODO: ()で括らなくて良い？
 					i += di[k]
 					j += dj[k]
 				}
