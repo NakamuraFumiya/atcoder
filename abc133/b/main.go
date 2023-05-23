@@ -16,26 +16,28 @@ func main() {
 	fmt.Fscan(r, &n)
 	fmt.Fscan(r, &d)
 
-	arrParent := make([][]int, n)
-	for i := 0; i < n; i++ {
-		arrChild := make([]int, d)
-		for j := 0; j < d; j++ {
-			fmt.Fscan(r, &arrChild[j])
-		}
-		arrParent[i] = arrChild
-	}
-
 	ans := 0
-	for i := 0; i+1 < n; i++ {
-		tmp := float64(0)
+	var tmp = make([][]int, n)
+	for i := 0; i < n; i++ {
 		for j := 0; j < d; j++ {
-			tmp += math.Pow(float64(arrParent[i][j]-arrParent[i+1][j]), 2)
-		}
-		if math.Floor(math.Sqrt(tmp)) == math.Sqrt(tmp) {
-			ans++
+			var x int
+			fmt.Fscan(r, &x)
+			tmp[i] = append(tmp[i], x)
 		}
 	}
 
-	// fmt.Printf("%v", arrParent)
+	for i := 0; i < n; i++ {
+		for j := i + 1; j < n; j++ {
+			var x float64
+			for k := 0; k < d; k++ {
+				x += math.Pow(float64(tmp[i][k]-tmp[j][k]), 2)
+			}
+			x = math.Sqrt(x)
+			if math.Floor(x) == x {
+				ans++
+			}
+		}
+	}
+
 	fmt.Println(ans)
 }
