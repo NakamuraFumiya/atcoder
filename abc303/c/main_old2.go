@@ -1,3 +1,5 @@
+//go:build ignore
+
 package main
 
 import (
@@ -53,8 +55,8 @@ func main() {
 		}
 
 		// アイテムの消費
-		if val, ok := items[current]; ok && val > 0 && h < k {
-			h = k
+		if items[current] > 0 && h < k {
+			h++
 			items[current]--
 		}
 	}
