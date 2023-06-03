@@ -6,54 +6,45 @@ import (
 	"os"
 )
 
+type Coordinate struct {
+	x int
+	y int
+}
+
 func main() {
 	r := bufio.NewReader(os.Stdin)
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
 	var n, m, h, k int
-	fmt.Fscan(r, &n)
-	fmt.Fscan(r, &m)
-	fmt.Fscan(r, &h)
-	fmt.Fscan(r, &k)
+	fmt.Fscan(r, &n, &m, &h, &k)
 
 	var s string
 	fmt.Fscan(r, &s)
 
-	xItem := make([]int, m)
-	yItem := make([]int, m)
+	items := make(map[Coordinate]int, 0)
 	for i := 0; i < m; i++ {
 		var x, y int
-		fmt.Fscan(r, &x)
-		fmt.Fscan(r, &y)
-		xItem = append(xItem, x)
-		yItem = append(yItem, y)
+		fmt.Fscan(r, &x, &y)
+		item := Coordinate{x, y}
+		items[item]++
 	}
 
 	ans := true
-	x, y := 0, 0
+	current := Coordinate{0, 0}
 	for i := range s {
 		h--
 
 		w := string(s[i])
 		switch w {
 		case "R":
-			x++
+			current.x++
 		case "L":
-			x--
+			current.x--
 		case "U":
-			y++
+			current.y++
 		case "D":
-			y--
-		}
-
-		for j := 0; j < m; j++ {
-			if (x == xItem[j] && y == yItem[j]) && h < k {
-				h++
-				// アイテムの消費
-				xItem = append(xItem[:j], xItem[j+1:]...)
-				yItem = append(yItem[:j], yItem[j+1:]...)
-			}
+			current.y--
 		}
 
 		if h < 0 {
@@ -61,8 +52,11 @@ func main() {
 			break
 		}
 
-		// fmt.Printf("h: %d, w: %s\n", h, w)
-
+		// アイテムの消費
+		if items[current] > 0 {
+			h++
+			items[current]--
+		}
 	}
 
 	if ans {
