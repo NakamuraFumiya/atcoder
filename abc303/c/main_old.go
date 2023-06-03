@@ -51,7 +51,7 @@ func main() {
 
 		for j := 0; j < m; j++ {
 			if (x == xItem[j] && y == yItem[j]) && h < k {
-				h++
+				h = k
 				// アイテムの消費
 				xItem = append(xItem[:j], xItem[j+1:]...)
 				yItem = append(yItem[:j], yItem[j+1:]...)
