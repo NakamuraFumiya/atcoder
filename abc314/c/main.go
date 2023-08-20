@@ -32,8 +32,6 @@ func main() {
 	tRune := []rune(s)
 	ans := []rune(s)
 
-	// map[1:[0_3_6]_2:[1_4_5_7]_3:[2]]
-
 	for _, v := range colorMap {
 		if len(v) < 2 {
 			continue
