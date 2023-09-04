@@ -3,13 +3,9 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 )
-
-type Person struct {
-	name string
-	age  uint64
-}
 
 func main() {
 	r := bufio.NewReader(os.Stdin)
@@ -19,26 +15,24 @@ func main() {
 	var n int
 	fmt.Fscan(r, &n)
 
-	persons := []Person{}
-	for i := 0; i < n; i++ {
-		var name string
-		var age uint64
-		fmt.Fscan(r, &name, &age)
-		persons = append(persons, Person{name, age})
-	}
+	ss := make([]string, n)
+	as := make([]int, n)
 
-	minIndex := 0
-	min := persons[0].age
-	for i, v := range persons {
-		if v.age < min {
+	minIndex := -1
+	minAge := int(math.Pow(10, 9)) + 1
+	for i := 0; i < n; i++ {
+		fmt.Fscan(r, &ss[i])
+		fmt.Fscan(r, &as[i])
+		if as[i] < minAge {
+			minAge = as[i]
 			minIndex = i
 		}
 	}
 
-	for _, v := range persons[minIndex:] {
-		fmt.Println(v.name)
+	for i := minIndex; i < len(ss); i++ {
+		fmt.Println(ss[i])
 	}
-	for _, v := range persons[:minIndex] {
-		fmt.Println(v.name)
+	for i := 0; i < minIndex; i++ {
+		fmt.Println(ss[i])
 	}
 }
