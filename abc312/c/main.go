@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 )
 
@@ -11,38 +12,39 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	var n, m uint64
+	var n, m int
 	fmt.Fscan(r, &n, &m)
 
-	var as = make([]uint64, n)
-	for i := uint64(0); i < n; i++ {
+	as := make([]int, n)
+	for i := range as {
 		fmt.Fscan(r, &as[i])
 	}
-
-	var bs = make([]uint64, m)
-	for i := uint64(0); i < m; i++ {
-		fmt.Fscan(r, &bs[i])
+	ms := make([]int, m)
+	for i := range ms {
+		fmt.Fscan(r, &ms[i])
 	}
 
-	wa, ac := uint64(0), uint64(1001001001)
-	for wa+1 < ac {
-		wj := uint64((wa + ac) / 2)
-		na, nb := 0, 0
-		for i := uint64(0); i < n; i++ {
-			if as[i] <= wj {
-				na++
+	left := 0
+	right := int(math.Pow(10, 9))
+	for left+1 < right {
+		checkNum := (left + right) / 2
+		seller := 0
+		for i := range as {
+			if as[i] <= checkNum {
+				seller++
 			}
 		}
-		for j := uint64(0); j < m; j++ {
-			if bs[j] >= wj {
-				nb++
+		buyer := 0
+		for i := range ms {
+			if ms[i] >= checkNum {
+				buyer++
 			}
 		}
-		if na >= nb {
-			ac = wj
+		if seller >= buyer {
+			right = checkNum
 		} else {
-			wa = wj
+			left = checkNum
 		}
 	}
-	fmt.Println(ac)
+	fmt.Println(right)
 }
