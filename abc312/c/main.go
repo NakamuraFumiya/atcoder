@@ -25,7 +25,7 @@ func main() {
 	}
 
 	left := 0
-	right := int(math.Pow(10, 9))
+	right := int(math.Pow(10, 9)) + 1
 	for left+1 < right {
 		checkNum := (left + right) / 2
 		seller := 0
